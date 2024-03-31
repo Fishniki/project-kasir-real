@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+    <style>
+        /* Additional CSS for navbar */
+        .sticky {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .border-b {
+            border-bottom-width: 1px;
+            border-bottom-style: solid;
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased">
+
+    <nav class="bg-blue-200 border-gray-200 dark:bg-gray-900 dark:border-gray-700 border-b sticky top-0">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="#" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <img src="https://flowbite.com/docs/images/logo.svg" class="h-8" alt="Flowbite Logo" />
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"><span class="text-green-600">Amba</span>Shop</span>
+            </a>
+            <button data-collapse-toggle="navbar-multi-level" type="button"
+                class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                aria-controls="navbar-multi-level" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 1h15M1 7h15M1 13h15" />
+                </svg>
+            </button>
+            <div class="hidden w-full md:block md:w-auto" id="navbar-multi-level">
+                <ul class="gap-3 flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lgmd:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:flex">
+                    <li>
+                        <div class="relative">
+                            <button id="dropdownNavbarLink" type="button"
+                                class="flex items-center justify-between w-full py-2 px-3 text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 md:w-auto dark:text-white md:dark:hover:text-blue-500 dark:focus:text-white dark:hover:bg-gray-700 md:dark:hover:bg-transparent">Dropdown
+                            </button>
+                            <!-- Dropdown menu -->
+                            <div id="dropdownNavbar"
+                                class="z-10 hidden absolute right-0 top-full font-normal bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
+                                <ul class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                                    aria-labelledby="dropdownLargeButton">
+                                    <li>
+                                        <a href="#"
+                                            class="bg-blue-400 block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Makanan</a>
+                                    </li>
+                                    <li>
+                                        <a href="#"
+                                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Minuman</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="#"
+                            class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500 dark:bg-blue-600 md:dark:bg-transparent"
+                            aria-current="page">Pesan</a>
+                    </li>
+                   
+                    <li>
+                        <a href="/create"><button type="button"
+                            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Tambah Menu </button></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="p-7">
+        <div class="max-w-screen-xl mx-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                <!-- Card 1 -->
+                {{ if . }}
+                    {{ range .upload }}
+                <div class="max-w-xs rounded overflow-hidden shadow-lg">
+                    <img class="w-full h-60 object-cover" src="/{{ .Foto }}">
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2 whitespace-normal">{{ .Name }}</div>
+                        <p class="text-gray-700 text-base">
+                            Rp.{{ .Harga }}
+                        </p>
+                            <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">Pesan</button>
+                    </div>
+                </div>
+                    {{ end }}
+                {{ end }}
+            </div>
+        </div>
+
+        <div class="mt-5 w-72 h-auto border-2 py-3 px-5">
+            <p>Pesanan</p>
+            <div class="menulist">
+                <div class="flex gap-2 w-60 p-3 items-center justify-center border-2 rounded-lg mt-5">
+                    <span>Makanan</span>
+                    <p>Harga</p>
+                    
+                    <div class="relative flex items-center max-w-[8rem]">
+                        <button type="button" id="decrement-button" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-md p-1 h-6 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                            <svg class="w-2 h-2 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                            </svg>
+                        </button>
+                        <input type="text" id="quantity-input" class="bg-gray-50 border-x-0 border-gray-300 h-6 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-5 py-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1" required />
+                        <button type="button" id="increment-button" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-md p-1 h-6 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                            <svg class="w-2 h-2 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                            </svg>
+                        </button>
+                    </div>
+                        
+                </div>
+                <p class="mt-5">Jenis Pembayaran</p>
+                <div class="max-w-sm mx-auto">
+                    <select id="underline_select" class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                        <option value="OVO">OVO</option>
+                        <option value="GOPAY">GOPAY</option>
+                        <option value="DANA">DANA</option>
+                        <option value="QRIS">QRIS</option>
+                    </select>
+                </div>
+  
+                <button type="button" class="mt-5 text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Bayar</button>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Repeat the above div for additional card sets -->
+    <!-- Add your additional card sets here -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navbarToggle = document.querySelector('[data-collapse-toggle="navbar-multi-level"]');
+            const navbarMenu = document.getElementById('navbar-multi-level');
+
+            navbarToggle.addEventListener('click', function () {
+                navbarMenu.classList.toggle('hidden');
+            });
+
+            const dropdownNavbarLink = document.getElementById('dropdownNavbarLink');
+            const dropdownNavbar = document.getElementById('dropdownNavbar');
+
+            dropdownNavbarLink.addEventListener('click', function () {
+                dropdownNavbar.classList.toggle('hidden');
+            });
+
+            // Sticky Navbar
+            window.onscroll = function () {
+                myFunction()
+            };
+
+            var navbar = document.getElementById("navbar-multi-level");
+
+            var sticky = navbar.offsetTop;
+
+            function myFunction() {
+                if (window.pageYOffset >= sticky) {
+                    navbar.classList.add("sticky")
+                } else {
+                    navbar.classList.remove("sticky");
+                }
+            }
+
+            // Add event listener to decrement button
+            document.getElementById('decrement-button').addEventListener('click', function() {
+                var input = document.getElementById('quantity-input');
+                var value = parseInt(input.value);
+                if (!isNaN(value) && value > 0) {
+                    input.value = value - 1;
+                }
+            });
+
+            // Add event listener to increment button
+            document.getElementById('increment-button').addEventListener('click', function() {
+                var input = document.getElementById('quantity-input');
+                var value = parseInt(input.value);
+                if (!isNaN(value)) {
+                    input.value = value + 1;
+                } else {
+                    input.value = 1;
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
