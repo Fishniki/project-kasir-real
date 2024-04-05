@@ -18,30 +18,34 @@ type List struct {
 func IndexView(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 
-		rows, err := db.Query("SELECT id, nama, harga, foto FROM `menu`")
+		//menselect berdasarkan id/data yang terbaru dikirikan
+		rows, err := db.Query("SELECT * FROM `menu` ORDER BY id DESC")
 		if err != nil {
 			w.Write([]byte(err.Error()))
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
+
 		upld := List{}
 		menu := []List{}
 		for rows.Next() {
 
 			var id, harga int
-			var name, foto string
+			var nama, foto string
 
-			err = rows.Scan(&id, &name, &harga, &foto)
+			//jika menselect berdasarkan id maka
+			//scan harus berdasarkan column yang berada di database
+			err = rows.Scan(&id, &foto, &nama, &harga)
 			if err != nil {
 				w.Write([]byte(err.Error()))
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
 			upld.Id = id
-			upld.Name = name
-			upld.Harga = harga
 			upld.Foto = foto
+			upld.Name = nama
+			upld.Harga = harga
 
 			menu = append(menu, upld)
 
@@ -69,7 +73,6 @@ func IndexView(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 			}
 
 		}
-		db.Close()
 
 	}
 }
