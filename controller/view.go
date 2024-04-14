@@ -7,6 +7,14 @@ import (
 	"path/filepath"
 )
 
+type Order struct {
+	Id       int
+	IdBarang int
+	Foto     string
+	Nama     string
+	Harga    int
+}
+
 type List struct {
 	Id    int
 	Name  string
@@ -17,62 +25,82 @@ type List struct {
 
 func IndexView(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-
-		//menselect berdasarkan id/data yang terbaru dikirikan
-		rows, err := db.Query("SELECT * FROM `menu` ORDER BY id DESC")
+		// Select data menu
+		menuSelect, err := db.Query("SELECT * FROM `menu` ORDER BY id DESC")
 		if err != nil {
 			w.Write([]byte(err.Error()))
 			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 
-
-		upld := List{}
-		menu := []List{}
-		for rows.Next() {
-
+		upldMenu := List{}
+		menuCard := []List{}
+		for menuSelect.Next() {
 			var id, harga int
 			var nama, foto string
 
-			//jika menselect berdasarkan id maka
-			//scan harus berdasarkan column yang berada di database
-			err = rows.Scan(&id, &foto, &nama, &harga)
+			err = menuSelect.Scan(&id, &foto, &nama, &harga)
 			if err != nil {
 				w.Write([]byte(err.Error()))
 				w.WriteHeader(http.StatusInternalServerError)
 				return
 			}
-			upld.Id = id
-			upld.Foto = foto
-			upld.Name = nama
-			upld.Harga = harga
+			upldMenu.Id = id
+			upldMenu.Foto = foto
+			upldMenu.Name = nama
+			upldMenu.Harga = harga
 
-			menu = append(menu, upld)
-
+			menuCard = append(menuCard, upldMenu)
 		}
 
-		upld.Count = len(menu)
-		if upld.Count > 0 {
-			// tmpl.ExecuteTemplate(w, "view.html", res)
-			fp := filepath.Join("view", "index.html")
-			tmpl, err := template.ParseFiles(fp)
-			if err != nil {
-				w.Write([]byte(err.Error()))
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-
-			data := make(map[string]any)
-			data["upload"] = menu
-
-			err = tmpl.Execute(w, data)
-			if err != nil {
-				w.Write([]byte(err.Error()))
-				w.WriteHeader(http.StatusInternalServerError)
-				return
-			}
-
+		// Select data order
+		rows, err := db.Query("SELECT * FROM `order` ORDER BY id DESC")
+		if err != nil {
+			w.Write([]byte(err.Error()))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
 		}
 
+		upldOrder := Order{}
+		orderList := []Order{}
+		for rows.Next() {
+			var id, idbarang, harga int
+			var foto, nama string
+
+			err = rows.Scan(&id, &idbarang, &foto, &nama, &harga)
+			if err != nil {
+				w.Write([]byte(err.Error()))
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
+
+			upldOrder.Id = id
+			upldOrder.IdBarang = idbarang
+			upldOrder.Foto = foto
+			upldOrder.Nama = nama
+			upldOrder.Harga = harga
+
+			orderList = append(orderList, upldOrder)
+		}
+
+		// Render index.html template with both menu and order data
+		fp := filepath.Join("view", "index.html")
+		tmpl, err := template.ParseFiles(fp)
+		if err != nil {
+			w.Write([]byte(err.Error()))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		data := make(map[string]interface{})
+		data["upload"] = menuCard
+		data["order"] = orderList
+
+		err = tmpl.Execute(w, data)
+		if err != nil {
+			w.Write([]byte(err.Error()))
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
 	}
 }

@@ -61,7 +61,8 @@ func InsertToDb(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
 
 			}
 
-			w.Write([]byte("Sucses"))
+			http.Redirect(w, r, "/", http.StatusMovedPermanently)
+
 
 		} else if r.Method == "GET" {
 
