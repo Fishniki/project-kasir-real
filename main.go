@@ -8,6 +8,8 @@ import (
 	"project-kasir/controller"
 )
 
+var niki int
+
 func Routes(server *http.ServeMux, db *sql.DB) {
 	server.HandleFunc("/", controller.IndexView(db))
 	server.HandleFunc("/create", controller.InsertToDb(db))
