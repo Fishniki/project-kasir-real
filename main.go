@@ -8,14 +8,13 @@ import (
 	"project-kasir/controller"
 )
 
-var niki int
 
 func Routes(server *http.ServeMux, db *sql.DB) {
 	server.HandleFunc("/", controller.IndexView(db))
 	server.HandleFunc("/create", controller.InsertToDb(db))
 	server.HandleFunc("/create/order", controller.InputToOrder(db))
 	server.HandleFunc("/create/order/delete", controller.DeletPesanan(db))
-	server.HandleFunc("/create/order/refresh", controller.DeletOrder(db))
+	server.HandleFunc("/create/order/delete/struk", controller.StrukPDF(db))
 	server.Handle("/file/", http.StripPrefix("/file/", http.FileServer(http.Dir("file"))))
 }
 

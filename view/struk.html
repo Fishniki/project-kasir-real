@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div class="h-20 max-w-screen-2xl">
+        <div class="flex flex-col justify-center items-center h-full">
+            <div class="flex flex-row"> 
+                <p class="text-center font-bold text-2xl text-green-500 outline-black">Amba</p>
+                <p class="text-black text-center font-bold text-2xl"> Shop</p>
+            </div>
+            <span class="-mt-1 font-medium text-gray-400">Jl. Rusdi Barbershop no.99, kecamatan Ngawi</span>
+        </div>
+    </div>
+    <hr class="hr-double">
+    <div class="px-40 mt-10">
+        <div class="container mx-auto p-1">
+            <table class="min-w-full">
+                <thead>
+                    <tr>
+                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">Jumlah</th>
+                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-7/12">Nama Menu</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-4/12">Harga Satuan</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {{ range .struk }}
+                    <tr>
+                        <td class="px-3 py-4 whitespace-nowrap text-left font-medium">{{ .Jumlah }}</td>
+                        <td class="px-3 py-4 whitespace-nowrap text-left font-medium">{{ .Namamenu }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-left text-red-500 font-semibold">Rp. {{ .Harga }}</td>
+                    </tr>
+                    {{ .MPembayaran }}
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr/>
+    <div class="container px-60 mt-10 -ml-16">
+        <div class="grid grid-rows-2-2 gap-4">
+            <div class="flex flex-row justify-between">
+                <h4>Diskon :</h4>
+                <p>Rp 30.000</p>
+            </div>
+            <div class="flex flex-row justify-between">
+                <h4>Total :</h4>
+                <p>Rp 30.000</p>
+
+            </div>
+        </div>
+    </div>
+    <div class="flex justify-center mt-9">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Cetak</button>
+    </div>
+</body>
+</html>
