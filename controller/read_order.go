@@ -55,6 +55,7 @@ func StrukPDF(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
         defer Struk.Close()
 
         StrukModel := []StrukBelanja{}
+        totalHarga := 0
 
         for Struk.Next() {
             var id, harga int
@@ -67,6 +68,7 @@ func StrukPDF(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
             }
 
             hargaTotal := harga * jumlasstr
+            totalHarga += hargaTotal
 
             StrukList := StrukBelanja{
                 Id:          id,
@@ -93,8 +95,9 @@ func StrukPDF(db *sql.DB) func(w http.ResponseWriter, r *http.Request) {
         }
 
         data := map[string]interface{}{
-            "struk": StrukModel,
-            "user":  pemesanModel,
+            "struk":      StrukModel,
+            "user":       pemesanModel,
+            "totalHarga": totalHarga,
         }
 
         err = tmpl.Execute(w, data)

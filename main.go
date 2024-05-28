@@ -15,6 +15,7 @@ func Routes(server *http.ServeMux, db *sql.DB) {
 	server.HandleFunc("/create/order", controller.InputToOrder(db))
 	server.HandleFunc("/create/order/delete", controller.DeletPesanan(db))
 	server.HandleFunc("/create/order/delete/struk", controller.StrukPDF(db))
+	server.HandleFunc("/create/order/delete/struk/cetak", controller.CetakPDF)
 	server.Handle("/file/", http.StripPrefix("/file/", http.FileServer(http.Dir("file"))))
 }
 
