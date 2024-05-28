@@ -34,7 +34,6 @@
                         <td class="px-3 py-4 whitespace-nowrap text-left font-medium">{{ .Namamenu }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-left text-red-500 font-semibold">Rp. {{ .Harga }}</td>
                     </tr>
-                    {{ .MPembayaran }}
                     {{ end }}
                 </tbody>
             </table>
@@ -43,6 +42,17 @@
     <hr/>
     <div class="container px-60 mt-10 -ml-16">
         <div class="grid grid-rows-2-2 gap-4">
+            {{ range .user }}
+            <div class="flex flex-row justify-between">
+                <h4>Nama Pemesan :</h4>
+                <p> {{ .Nama }} </p>
+
+            </div>
+            <div class="flex flex-row justify-between">
+                <h4>Metode Pembayaran :</h4>
+                <p> {{ .MetodePembayaran }} </p>
+
+            </div>
             <div class="flex flex-row justify-between">
                 <h4>Diskon :</h4>
                 <p>Rp 30.000</p>
@@ -52,6 +62,7 @@
                 <p>Rp 30.000</p>
 
             </div>
+            {{ end }}
         </div>
     </div>
     <div class="flex justify-center mt-9">
