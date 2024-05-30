@@ -7,61 +7,82 @@
     <title>Struk Belanja</title>
 </head>
 <body>
-    <div class="h-20 max-w-screen-2xl">
-        <div class="flex flex-col justify-center items-center h-full">
-            <div class="flex flex-row"> 
-                <p class="text-center font-bold text-2xl text-green-500 outline-black">Amba</p>
-                <p class="text-black text-center font-bold text-2xl"> Shop</p>
+    <div id="receipt-content">
+        <div class="h-20 max-w-screen-2xl">
+            <div class="flex flex-col justify-center items-center h-full">
+                <div class="flex flex-row"> 
+                    <p class="text-center font-bold text-2xl text-green-500 outline-black">Amba</p>
+                    <p class="text-black text-center font-bold text-2xl"> Shop</p>
+                </div>
+                <span class="-mt-1 font-medium text-gray-400">Jl. Rusdi Barbershop no.99, kecamatan Ngawi</span>
             </div>
-            <span class="-mt-1 font-medium text-gray-400">Jl. Rusdi Barbershop no.99, kecamatan Ngawi</span>
         </div>
-    </div>
-    <hr class="hr-double">
-    <div class="px-40 mt-10">
-        <div class="container mx-auto p-1">
-            <table class="min-w-full">
-                <thead>
-                    <tr>
-                        <th class="px-3 py-3 text-left t bv  ext-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">Jumlah</th>
-                        <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-7/12">Nama Menu</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-4/12">Harga Total</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    {{ range .struk }}
-                    <tr>
-                        <td class="px-3 py-4 whitespace-nowrap text-left font-medium">{{ .Jumlah }}</td>
-                        <td class="px-3 py-4 whitespace-nowrap text-left font-medium">{{ .Namamenu }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-left text-red-500 font-semibold">Rp {{ .Harga }}</td>
-                    </tr>
-                    {{ end }}
-                </tbody>
-            </table>
+        <hr class="hr-double">
+        <div class="px-40 mt-10">
+            <div class="container mx-auto p-1">
+                <table class="min-w-full">
+                    <thead>
+                        <tr>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">Jumlah</th>
+                            <th class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-7/12">Nama Menu</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-4/12">Harga Total</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {{ range .struk }}
+                        <tr>
+                            <td class="px-3 py-4 whitespace-nowrap text-left font-medium">{{ .Jumlah }}</td>
+                            <td class="px-3 py-4 whitespace-nowrap text-left font-medium">{{ .Namamenu }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-left text-red-500 font-semibold">Rp {{ .Harga }}</td>
+                        </tr>
+                        {{ end }}
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
-    <hr/>
-    <div class="container px-60 mt-10">
-        <div class="grid grid-rows-4 gap-4">
-            {{ range .user }}
-            <div class="flex flex-row justify-between">
-                <h4 class="font-medium text-black text-xl">Nama Pemesan :</h4>
-                <p class="  text-xl">{{ .Nama }}</p>
-            </div>
-            <div class="flex flex-row justify-between">
-                <h4 class="font-medium text-black text-xl">Metode Pembayaran :</h4>
-                <p class=" text-xl">{{ .MetodePembayaran }}</p>
-            </div>
-            {{ end }}
-            <div class="flex flex-row justify-between">
-                <h4 class="font-medium text-black text-xl">Total :</h4>
-                <p class="font-bold  text-red-500 text-lg">Rp {{ .totalHarga }}</p>
+        <hr/>
+        <div class="container px-60 mt-10">
+            <div class="grid grid-rows-4 gap-4">
+                {{ range .user }}
+                <div class="flex flex-row justify-between">
+                    <h4 class="font-medium text-black text-xl">Nama Pemesan :</h4>
+                    <p class="text-xl">{{ .Nama }}</p>
+                </div>
+                <div class="flex flex-row justify-between">
+                    <h4 class="font-medium text-black text-xl">Metode Pembayaran :</h4>
+                    <p class="text-xl">{{ .MetodePembayaran }}</p>
+                </div>
+                {{ end }}
+                <div class="flex flex-row justify-between">
+                    <h4 class="font-medium text-black text-xl">Total :</h4>
+                    <p class="font-bold text-red-500 text-lg">Rp {{ .totalHarga }}</p>
+                </div>
             </div>
         </div>
     </div>
     <div class="flex justify-center mt-9">
-        <a href="/create/order/delete/struk/cetak">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4">Cetak</button>
-        </a>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" id="download-pdf">Cetak</button>
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        document.getElementById('download-pdf').addEventListener('click', function() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            // Use html2canvas to capture the HTML content
+            html2canvas(document.getElementById('receipt-content')).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const imgProps = doc.getImageProperties(imgData);
+                const pdfWidth = doc.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+                doc.save('struk_belanja.pdf');
+            });
+        });
+    </script>
 </body>
 </html>
+b 
